@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://ccie12pdj84go"]
+
+[ext_resource type="Script" uid="uid://bv5hbfmaeqo2r" path="res://scripts/next_level.gd" id="1_rf0ph"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jvy82"]
+size = Vector2(43, 31)
+
+[sub_resource type="Animation" id="Animation_rf0ph"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("transition_screen/ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.07058824)]
+}
+
+[sub_resource type="Animation" id="Animation_sd4vo"]
+resource_name = "fade_to_black"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("transition_screen/ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.07058824), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_e8fy2"]
+resource_name = "fade_to_normal"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("transition_screen/ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.07058824), Color(1, 1, 1, 0.95686275), Color(1, 1, 1, 0.07058824)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wlp6t"]
+_data = {
+&"RESET": SubResource("Animation_rf0ph"),
+&"fade_to_black": SubResource("Animation_sd4vo"),
+&"fade_to_normal": SubResource("Animation_e8fy2")
+}
+
+[node name="NextLevel" type="Area2D" unique_id=96987362]
+script = ExtResource("1_rf0ph")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1972863443]
+position = Vector2(11.5, -10.5)
+shape = SubResource("RectangleShape2D_jvy82")
+
+[node name="transition_screen" type="CanvasLayer" parent="." unique_id=1149610687]
+
+[node name="ColorRect" type="ColorRect" parent="transition_screen" unique_id=1975666481]
+modulate = Color(1, 1, 1, 0.07058824)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15621245, 0.085368566, 0.05692991, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="transition_screen" unique_id=146535151]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_wlp6t")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
